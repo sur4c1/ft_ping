@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:09:35 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/10/24 18:23:02 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/10/24 18:34:38 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int letter_options(char *argv[], t_arguments *arguments)
 			arguments->option_flags |= VERBOSE;
 			continue;
 		}
-		if (**argv == 'h')
+		if (**argv == '?')
 		{
 			arguments->option_flags |= HELP;
 			continue;
@@ -187,6 +187,7 @@ int letter_options(char *argv[], t_arguments *arguments)
 			used_args++;
 			continue;
 		}
+		error("invalid option", PARSE_ERROR, true);
 	}
 	return (used_args);
 }
@@ -207,7 +208,6 @@ t_arguments	parse_arguments(char *argv[])
 		}
 		else if (**argv == '-')
 		{
-			(*argv) += 1;
 			argv += letter_options(argv, &arguments);
 		}
 		else

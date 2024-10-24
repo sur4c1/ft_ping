@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:38:35 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/10/24 17:08:50 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/10/24 18:28:31 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	usage(void)
 		"\tping [options] <destination>+\n"
 		"\n"
 		"OPTIONS:\n"
-		"-v, --verbose\n"
+		"\t-v, --verbose\n"
 		"\t-?, --help\n"
 		"\t-f, --flood\n"
 		"\t-l, --preload <preload>\n"

@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:04:54 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/10/24 15:59:18 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/10/24 18:36:59 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 enum e_options
 {
 	VERBOSE		= 0b1,
-	HELP		= 0b01,
-	FLOOD		= 0b001,
-	PRELOAD		= 0b0001,
-	NUMERIC		= 0b00001,
-	TIMEOUT		= 0b000001,
-	LINGER		= 0b0000001,
-	PATERN		= 0b00000001,
-	IGN_ROUTE	= 0b000000001,
-	PCKT_SIZE	= 0b0000000001,
-	TTL			= 0b00000000001,
-	IP_TIMESTMP = 0b000000000001
+	HELP		= 0b10,
+	FLOOD		= 0b100,
+	PRELOAD		= 0b1000,
+	NUMERIC		= 0b10000,
+	TIMEOUT		= 0b100000,
+	LINGER		= 0b1000000,
+	PATERN		= 0b10000000,
+	IGN_ROUTE	= 0b100000000,
+	PCKT_SIZE	= 0b1000000000,
+	TTL			= 0b10000000000,
+	IP_TIMESTMP = 0b100000000000
 };
 
 typedef enum {
