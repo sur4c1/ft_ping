@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"arguments.h": "c",
+		"t_arguments.h": "c",
+		"stdbool.h": "c",
+		"error.h": "c",
+		"strtab.h": "c",
+		"ft_ping.h": "c",
+		"t_strtab.h": "c"
+	}
+}
