@@ -4,8 +4,8 @@ SRCS_DIR	=	srcs/
 INCS_DIR	=	incs/
 OBJS_DIR	=	objs/
 
-SRCS_FILES	=	ft_ping	arguments error usage strtab
-INCS_FILES	=	ft_ping	arguments												\
+SRCS_FILES	=	ft_ping	arguments	error	usage strtab	execute
+INCS_FILES	=	ft_ping	arguments	execute	ft_error	strtab	usage			\
 				structs/t_arguments	structs/t_status	structs/t_strtab
 
 OBJS		=	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
@@ -18,6 +18,8 @@ CFLAGS		=	-Wall -Wextra -Werror -I $(INCS_DIR)
 
 RM			=	$(SILENCER)rm -rf
 MKDIR		=	$(SILENCER)mkdir -p
+CHOWN		=	$(SILENCER)sudo chown
+CHMOD		=	$(SILENCER)sudo chmod
 
 all:			$(NAME)
 
@@ -34,6 +36,8 @@ debug: re
 
 $(NAME):		$(OBJS) $(INCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS)
+	$(CHOWN) root:root $(NAME)
+	$(CHMOD) u+s $(NAME)
 
 $(OBJS_DIR)%.o:	$(SRCS_DIR)%.c
 	$(MKDIR) $(OBJS_DIR)
