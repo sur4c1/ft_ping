@@ -6,13 +6,18 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:45:51 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 10:58:23 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/19 11:03:43 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libargs.h"
 #include <string.h>
 
+/**
+ * @brief	Print a help message for the arguments config, according to
+ * 			this format:
+ * 			`cmd [-s|--long-name <option-value>]... <positional>...`
+ */
 void	print_help(char *program_name, t_args_config *config)
 {
 	t_args_config	*ptr;
@@ -25,12 +30,6 @@ void	print_help(char *program_name, t_args_config *config)
 	{
 		if (!ptr->is_option)
 			continue;
-		/*
-			[-s|--long <value-name>]...
-			#                      #     -> is optional
-			          #############      -> has_value
-			                        ###  -> repeat_mode APPEND
-		 */
 		printf(" ");
 		if (!ptr->is_mandatory)
 			ptrinf("[");
