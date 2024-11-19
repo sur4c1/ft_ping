@@ -24,7 +24,7 @@ CHMOD		=	$(SILENCER)sudo chmod
 all:			$(NAME)
 
 clean:
-	$(RM) $(OBJS_DIR)
+	$(RM)	$(OBJS_DIR)
 
 fclean:	clean
 	$(RM)	$(NAME)
