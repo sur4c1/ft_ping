@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 16:59:24 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/10/25 11:53:06 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/10/24 18:17:36 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	strtab_push(t_strtab *chartab, char *str)
 	chartab->tab[chartab->size++] = str;
 }
 
-void	strtab_print(t_strtab chartab, char *prefix)
+void	strtab_print(t_strtab chartab)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < chartab.size)
 	{
-		dprintf(2, "%s%s\n", prefix, chartab.tab[i]);
+		dprintf(2, "%s\n", chartab.tab[i]);
 		i++;
 	}
 }

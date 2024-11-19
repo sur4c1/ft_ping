@@ -14,7 +14,6 @@
 
 #include <stdint.h>
 #include <strtab.h>
-#include <sys/time.h>
 
 enum e_options
 {
@@ -41,8 +40,8 @@ typedef struct {
 	uint16_t	option_flags;
 	t_strtab	destinations;
 	int			preload;
-	int			linger;
 	int			timeout;
+	int			linger;
 	char		pattern[16];
 	int			packet_size;
 	int			ttl;

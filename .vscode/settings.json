@@ -6,9 +6,6 @@
 		"error.h": "c",
 		"strtab.h": "c",
 		"ft_ping.h": "c",
-		"t_strtab.h": "c",
-		"execute.h": "c",
-		"ip_icmp.h": "c",
-		"t_results.h": "c"
+		"t_strtab.h": "c"
 	}
 }
