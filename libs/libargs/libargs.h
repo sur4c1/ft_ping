@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:16:58 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 07:01:10 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/19 07:09:01 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct	s_args
 }	t_args;
 
 void	print_help(char *program_name, t_args_config *config);
-void	add(t_args_config **config, t_args_config *new_config);
+void	add(t_args_config **config, t_args_config new_config);
 void	free_config(t_args_config *config);
 t_args	*parse(int argc, char **argv, t_args_config *config);
 void	free_args(t_args *args);
