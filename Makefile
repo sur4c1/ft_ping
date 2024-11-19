@@ -18,6 +18,8 @@ CFLAGS		=	-Wall -Wextra -Werror -I $(INCS_DIR)
 
 RM			=	$(SILENCER)rm -rf
 MKDIR		=	$(SILENCER)mkdir -p
+CHOWN		=	$(SILENCER)sudo chown
+CHMOD		=	$(SILENCER)sudo chmod
 
 all:			$(NAME)
 
@@ -34,6 +36,8 @@ debug: re
 
 $(NAME):		$(OBJS) $(INCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS)
+	$(CHOWN) root:root $(NAME)
+	$(CHMOD) u+s $(NAME)
 
 $(OBJS_DIR)%.o:	$(SRCS_DIR)%.c
 	$(MKDIR) $(OBJS_DIR)
