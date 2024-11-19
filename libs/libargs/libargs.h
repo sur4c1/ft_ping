@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:16:58 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 07:09:01 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/19 07:17:52 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 typedef enum
 {
