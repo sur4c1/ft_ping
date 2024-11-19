@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:16:58 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 07:17:52 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/19 10:50:24 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef enum
 
 typedef enum
 {
-	OVERRIDE,
 	ERROR,
+	OVERRIDE,
 	APPEND,
 }	t_repeat_mode;
 
@@ -45,11 +45,13 @@ typedef struct	s_args_config
 	t_repeat_mode		repeat_mode;
 
 	bool				is_option;
+	bool				has_value;
 	char				short_name;
-	bool				has_argument;
-	char				argument_name[64];
-	t_type				argument_type;
-	void				*(*custom_parser)(char *);
+	char				value_name[64];
+	char				description[512];
+	t_type				value_type;
+	void				*(*parse_value)(char *);
+	void				(*free_value)(void *);
 
 	struct s_args_config	*next;
 }	t_args_config;
