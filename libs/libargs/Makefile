@@ -6,13 +6,13 @@
 #    By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 06:46:15 by yyyyyy            #+#    #+#              #
-#    Updated: 2024/11/19 07:04:38 by yyyyyy           ###   ########.fr        #
+#    Updated: 2024/11/19 10:32:24 by yyyyyy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libargs.a
 
-SRCS		=	print_help
+SRCS		=	print_help	parsers
 
 OBJDIR		=	objs/
 OBJS		=	$(addprefix $(OBJDIR), $(addsuffix .o, $(SRCS)))
@@ -30,7 +30,7 @@ $(NAME):	$(OBJS)
 
 $(OBJDIR)%.o: %.c
 	$(MKDIR) $(OBJDIR)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 all:		$(NAME)
 
