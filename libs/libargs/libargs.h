@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:16:58 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 10:50:24 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/19 11:22:09 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct	s_args_config
 	char				description[512];
 	t_type				value_type;
 	void				*(*parse_value)(char *);
-	void				(*free_value)(void *);
 
 	struct s_args_config	*next;
 }	t_args_config;
@@ -64,9 +63,12 @@ typedef struct	s_args
 	struct s_args	*next;
 }	t_args;
 
-void	print_help(char *program_name, t_args_config *config);
-void	add(t_args_config **config, t_args_config new_config);
-void	free_config(t_args_config *config);
-t_args	*parse(int argc, char **argv, t_args_config *config);
-void	free_args(t_args *args);
-void	*get_value(t_args *args, char *key);
+void			print_help(char *program_name, t_args_config *config);
+void			add_config(t_args_config **config, t_args_config new_config);
+void			free_config(t_args_config *config);
+t_args			*parse(int argc, char **argv, t_args_config *config);
+void			free_args(t_args *args);
+t_args_config	*find_config_shrt(t_args_config *config, char shrt);
+t_args_config	*find_config_long(t_args_config *config, char *long_name);
+t_args_config	*fing_positional(t_args_config *config, int positional)
+void			*get_value(t_args *args, char *key);
