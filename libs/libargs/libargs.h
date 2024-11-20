@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:16:58 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/19 11:22:09 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/20 06:05:01 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ t_args			*parse(int argc, char **argv, t_args_config *config);
 void			free_args(t_args *args);
 t_args_config	*find_config_shrt(t_args_config *config, char shrt);
 t_args_config	*find_config_long(t_args_config *config, char *long_name);
-t_args_config	*fing_positional(t_args_config *config, int positional)
+t_args_config	*find_positional(t_args_config *config, int positional);
 void			*get_value(t_args *args, char *key);
