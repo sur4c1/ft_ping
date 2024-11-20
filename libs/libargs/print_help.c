@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 06:45:51 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/20 06:05:34 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/20 06:07:36 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_help(char *program_name, t_args_config *config)
 	char			brackets[3] = "[]";
 
 	printf("\nUsage\n");
-	printf("%s", program_name);
+	printf("\t%s", program_name);
 	ptr = config;
 	while (ptr)
 	{
