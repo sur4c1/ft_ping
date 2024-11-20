@@ -6,13 +6,13 @@
 #    By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 06:46:15 by yyyyyy            #+#    #+#              #
-#    Updated: 2024/11/19 10:32:24 by yyyyyy           ###   ########.fr        #
+#    Updated: 2024/11/20 08:23:15 by yyyyyy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	libargs.a
 
-SRCS		=	print_help	parsers
+SRCS		=	print_help	parsers	life_and_death
 
 OBJDIR		=	objs/
 OBJS		=	$(addprefix $(OBJDIR), $(addsuffix .o, $(SRCS)))
