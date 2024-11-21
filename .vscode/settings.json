@@ -6,6 +6,14 @@
 		"error.h": "c",
 		"strtab.h": "c",
 		"ft_ping.h": "c",
-		"t_strtab.h": "c"
+		"t_strtab.h": "c",
+		"ft_buff.h": "c",
+		"_ft_printf.h": "c",
+		"ft_printf.h": "c",
+		"stdarg.h": "c",
+		"libft.h": "c",
+		"ft_math.h": "c",
+		"ft_memory.h": "c",
+		"ft_getopt.h": "c"
 	}
 }
