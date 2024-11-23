@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_status.h                                         :+:      :+:    :+:   */
+/*   ping.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/24 15:47:18 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/10/24 15:49:16 by yyyyyy           ###   ########.fr       */
+/*   Created: 2024/11/23 14:39:37 by yyyyyy            #+#    #+#             */
+/*   Updated: 2024/11/23 14:50:53 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include "ft_ping.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
 
-typedef enum {
-	OK,
-	PARSE_ERROR = 2,
-}	t_status;
+t_error		ping(char *host);

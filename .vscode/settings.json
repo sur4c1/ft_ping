@@ -14,6 +14,8 @@
 		"libft.h": "c",
 		"ft_math.h": "c",
 		"ft_memory.h": "c",
-		"ft_getopt.h": "c"
+		"ft_getopt.h": "c",
+		"ping.h": "c",
+		"socket.h": "c"
 	}
 }

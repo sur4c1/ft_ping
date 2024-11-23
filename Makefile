@@ -4,11 +4,10 @@ LIBFT		=	libft.a
 SRCS_DIR	=	srcs/
 INCS_DIR	=	incs/
 OBJS_DIR	=	objs/
-LIBFT_DIR	=	libs/libft/
+LIBFT_DIR	=	./libs/libft/
 
-SRCS_FILES	=	ft_ping	arguments error usage strtab
-INCS_FILES	=	ft_ping	arguments												\
-				structs/t_arguments	structs/t_status	structs/t_strtab
+SRCS_FILES	=	ft_ping	arguments ping
+INCS_FILES	=	ft_ping	arguments ping
 
 OBJS		=	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
 INCS		=	$(addprefix $(INCS_DIR), $(addsuffix .h, $(INCS_FILES)))
@@ -38,7 +37,7 @@ debug: CFLAGS += -fsanitize=address -g3
 debug: re
 
 $(NAME):		$(OBJS) $(INCS) $(LIBFT_DIR)$(LIBFT)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
 	$(CHOWN) root:root $(NAME)
 	$(CHMOD) u+s $(NAME)
 

@@ -6,18 +6,12 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:08:22 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/23 16:13:56 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/23 14:41:16 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "structs/t_arguments.h"
-#include "libft.h"
-#include "ft_error.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "ft_ping.h"
 
-t_arguments	parse_arguments(int argc, char *argv[]);
-void		print_arguments(t_arguments arguments);
+t_error	parse_arguments(int argc, char *argv[]);
