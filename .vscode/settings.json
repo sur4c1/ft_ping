@@ -16,6 +16,8 @@
 		"ft_memory.h": "c",
 		"ft_getopt.h": "c",
 		"ping.h": "c",
-		"socket.h": "c"
+		"socket.h": "c",
+		"ip.h": "c",
+		"ip_icmp.h": "c"
 	}
 }

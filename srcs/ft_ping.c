@@ -6,15 +6,16 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 13:57:16 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/23 14:48:15 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/23 15:46:42 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "arguments.h"
 #include "ping.h"
 
-t_bool	g_help 		= FALSE;
-t_bool	g_verbose	= FALSE;
+t_bool	g_help 			= FALSE;
+t_bool	g_verbose		= FALSE;
+int		g_msgsz	= 56;
 
 int	main(int argc, char *argv[])
 {
