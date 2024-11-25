@@ -20,6 +20,8 @@
 		"ip.h": "c",
 		"ip_icmp.h": "c",
 		"ft_globals.h": "c",
-		"netdb.h": "c"
+		"netdb.h": "c",
+		"__ft_printf.h": "c",
+		"limits.h": "c"
 	}
 }
