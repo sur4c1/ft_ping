@@ -16,7 +16,7 @@ SILENCER	=
 
 CC			=	$(SILENCER)cc
 CFLAGS		=	-Wall -Wextra -Werror -I $(INCS_DIR) -I $(LIBFT_DIR)
-LDFLAGS		=	-L $(LIBFT_DIR) -lft
+LDFLAGS		=	-L $(LIBFT_DIR) -lft -lm
 
 RM			=	$(SILENCER)rm -rf
 MKDIR		=	$(SILENCER)mkdir -p
@@ -26,6 +26,7 @@ CHMOD		=	$(SILENCER)sudo chmod
 all:			$(NAME)
 
 clean:
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(RM)	$(OBJS_DIR)
 
 fclean:	clean

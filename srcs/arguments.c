@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:09:35 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/23 14:41:16 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/25 05:40:23 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,19 @@ t_error	parse_arguments(int argc, char *argv[])
 	t_option	options[] = {
 		{"verbose", no_argument, NULL, 'v'},
 		{"help", no_argument, NULL, '?'},
+		{"count", required_argument, NULL, 'c'},
 		{NULL, no_argument, NULL, 0},
 	};
 
-	while ((arg = ft_getopt_long(argc, argv, "v?", options, &longindx)) != -1)
+	while ((arg = ft_getopt_long(argc, argv, "v?c:", options, &longindx)) != -1)
 	{
 		switch (arg)
 		{
 			case 'v':
 				g_verbose = TRUE;
+				break;
+			case 'c':
+				g_count = ft_atoi(ft_optarg);
 				break;
 			case '?':
 				if (!ft_optopt)
