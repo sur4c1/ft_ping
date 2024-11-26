@@ -8,8 +8,8 @@
 		"ft_ping.h": "c",
 		"t_strtab.h": "c",
 		"ft_buff.h": "c",
-		"_ft_printf.h": "c",
-		"ft_printf.h": "c",
+		"_printf.h": "c",
+		"printf.h": "c",
 		"stdarg.h": "c",
 		"libft.h": "c",
 		"ft_math.h": "c",
@@ -21,7 +21,7 @@
 		"ip_icmp.h": "c",
 		"ft_globals.h": "c",
 		"netdb.h": "c",
-		"__ft_printf.h": "c",
+		"__printf.h": "c",
 		"limits.h": "c"
 	}
 }

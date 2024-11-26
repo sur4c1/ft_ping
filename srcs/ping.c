@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/25 12:56:24 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/11/26 06:22:07 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,27 @@ u16		checksum(u16 *data, size_t len)
 // static
 // void	show_iphdr(struct iphdr *iphdr)
 // {
-// 	ft_printf("IP info:\n");
-// 	ft_printf("\tVersion: %d\n", iphdr->version);
-// 	ft_printf("\tHeader length: %d\n", iphdr->ihl);
-// 	ft_printf("\tTotal length: %d\n", ntohs(iphdr->tot_len));
-// 	ft_printf("\tID: %d\n", ntohs(iphdr->id));
-// 	ft_printf("\tTTL: %d\n", iphdr->ttl);
-// 	ft_printf("\tProtocol: %d\n", iphdr->protocol);
-// 	ft_printf("\tChecksum: %d\n", ntohs(iphdr->check));
-// 	ft_printf("\tSource: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->saddr));
-// 	ft_printf("\tDestination: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->daddr));
+// 	printf("IP info:\n");
+// 	printf("\tVersion: %d\n", iphdr->version);
+// 	printf("\tHeader length: %d\n", iphdr->ihl);
+// 	printf("\tTotal length: %d\n", ntohs(iphdr->tot_len));
+// 	printf("\tID: %d\n", ntohs(iphdr->id));
+// 	printf("\tTTL: %d\n", iphdr->ttl);
+// 	printf("\tProtocol: %d\n", iphdr->protocol);
+// 	printf("\tChecksum: %d\n", ntohs(iphdr->check));
+// 	printf("\tSource: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->saddr));
+// 	printf("\tDestination: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->daddr));
 // }
 
 // static
 // void	show_icmphdr(struct icmphdr *icmphdr)
 // {
-// 	ft_printf("ICMP info:\n");
-// 	ft_printf("\tType: %d\n", icmphdr->type);
-// 	ft_printf("\tCode: %d\n", icmphdr->code);
-// 	ft_printf("\tChecksum: %d\n", ntohs(icmphdr->checksum));
-// 	ft_printf("\tID: %d\n", ntohs(icmphdr->un.echo.id));
-// 	ft_printf("\tSequence: %d\n", ntohs(icmphdr->un.echo.sequence));
+// 	printf("ICMP info:\n");
+// 	printf("\tType: %d\n", icmphdr->type);
+// 	printf("\tCode: %d\n", icmphdr->code);
+// 	printf("\tChecksum: %d\n", ntohs(icmphdr->checksum));
+// 	printf("\tID: %d\n", ntohs(icmphdr->un.echo.id));
+// 	printf("\tSequence: %d\n", ntohs(icmphdr->un.echo.sequence));
 // }
 
 static
@@ -111,10 +111,10 @@ t_error	recv_packet(int sockfd, char *buffer, size_t len)
 static
 void	print_start(char *host)
 {
-	ft_printf("PING %s (%s): %d bytes of data", host, host, g_msgsz);
+	printf("PING %s (%s): %d bytes of data", host, host, g_msgsz);
 	if (g_verbose)
-		ft_printf(", id 0x%4x = %d\n", U16_MAX & getpid(), U16_MAX & getpid());
-	ft_printf("\n");
+		printf(", id 0x%4x = %d\n", U16_MAX & getpid(), U16_MAX & getpid());
+	printf("\n");
 }
 
 static
@@ -135,15 +135,13 @@ void	print_received(
 		diff.tv_sec--;
 		diff.tv_usec += 1000000;
 	}
-	while (diff.tv_usec >= 1000)
-		diff.tv_usec /= 10;
-	ft_printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%ld.%03ld ms\n",
+
+	printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3lf ms\n",
 		ntohs(iphdr->tot_len) - iphdr->ihl * 4,
 		inet_ntoa(*(struct in_addr *)&iphdr->saddr),
 		icmphdr->un.echo.sequence,
 		iphdr->ttl,
-		diff.tv_sec,
-		diff.tv_usec
+		diff.tv_sec * 1000.0 + diff.tv_usec / 1000.0
 	);
 }
 
@@ -159,8 +157,8 @@ void	print_stats(char *host, u16 seq, u16 recv_nb, struct timeval *timerecv, str
 	i = 0;
 	while (i < recv_nb)
 	{
-		double	diff = (timerecv[i].tv_sec - timesent[i].tv_sec) +
-			(timerecv[i].tv_usec - timesent[i].tv_usec) / 1000000;
+		double	diff = (timerecv[i].tv_sec - timesent[i].tv_sec) * 1000.0 +
+			(timerecv[i].tv_usec - timesent[i].tv_usec) / 1000.0;
 		if (min > diff)
 			min = diff;
 		if (max < diff)
@@ -178,10 +176,10 @@ void	print_stats(char *host, u16 seq, u16 recv_nb, struct timeval *timerecv, str
 		i++;
 	}
 	stddev = sqrt(stddev / recv_nb);
-	ft_printf("--- %s ping statistics ---\n", host);
-	ft_printf("%d packets transmitted, %d received, %d%% packet loss\n",
+	printf("--- %s ping statistics ---\n", host);
+	printf("%d packets transmitted, %d received, %d%% packet loss\n",
 		seq, recv_nb, (seq - recv_nb) * 100 / seq);
-	ft_printf("round-trip min/avg/max/stddev = %.3lf/%.3lf/%.3lf/%.3lf ms\n",
+	printf("round-trip min/avg/max/stddev = %.3lf/%.3lf/%.3lf/%.3lf ms\n",
 		min, avg, max, stddev);
 }
 
@@ -207,7 +205,7 @@ t_error	ping(char *host)
 	if (get_addr(host, 0, &dest_addr))
 	{
 		close(sockfd);
-		ft_dprintf(2, "%s: unknown host\n", g_argv[0]);
+		dprintf(2, "%s: unknown host\n", g_argv[0]);
 		return (UKNOWN_HOST);
 	}
 	seq = recv_nb = 0;
