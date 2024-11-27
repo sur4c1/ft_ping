@@ -34,7 +34,7 @@ fclean:	clean
 
 re:	fclean all
 
-debug: CFLAGS += -fsanitize=address -g3
+debug: CFLAGS += -fsanitize=address -g3 -DDEBUG
 debug: re
 
 $(NAME):		$(OBJS) $(INCS) $(LIBFT_DIR)$(LIBFT)
