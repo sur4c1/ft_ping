@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/06 17:22:42 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 18:12:23 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,9 @@ t_error	recv_packet(int sockfd, char *buffer, size_t len)
 }
 
 static
-void	print_start(char *host)
+void	print_start(char *host, struct in_addr addr)
 {
-	printf("PING %s (%s): %d bytes of data", host, host, g_msgsz);
+	printf("PING %s (%s): %d bytes of data", host, inet_ntoa(addr), g_msgsz);
 	if (g_verbose)
 		printf(", id 0x%4x = %d", U16_MAX & getpid(), U16_MAX & getpid());
 	printf("\n");
@@ -290,7 +290,7 @@ t_error	ping(char *host)
 	seq = recv_nb = 0;
 	ft_bzero(timesent, sizeof(timesent));
 	ft_bzero(timerecv, sizeof(timerecv));
-	print_start(host);
+	print_start(host, dest_addr.sin_addr);
 	FD_ZERO(&readfds);
 	gettimeofday(&last_sent, NULL);
 	gettimeofday(&timesent[seq], NULL);
