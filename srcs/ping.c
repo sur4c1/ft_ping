@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/06 18:12:23 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 18:14:47 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_bool	is_packet_valid(char *packet, str message)
 {
 	struct iphdr	*iphdr;
 	struct icmphdr	*icmp;
-	u16				p_checksum;
 
 	iphdr = (struct iphdr *)packet;
 	icmp = (struct icmphdr *)(packet + iphdr->ihl * 4);
