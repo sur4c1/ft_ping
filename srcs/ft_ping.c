@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 13:57:16 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/27 05:18:56 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 16:19:12 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		g_msgsz			= 56;
 time_t	g_linger		= 10;
 time_t	g_interval		= 1;
 str		g_patern		= "abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXY";
+int		g_ttl			= 64;
 
 /*	SIGNALS
  */

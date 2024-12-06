@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/27 06:00:27 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 16:16:04 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,12 @@ t_error	ping(char *host)
 	if ((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP))< 0)
 	{
 		perror("socket");
+		return (ERROR);
+	}
+	if (setsockopt(sockfd, IPPROTO_IP, IP_TTL, &(int){g_ttl}, sizeof(int)) < 0)
+	{
+		perror("setsockopt");
+		close(sockfd);
 		return (ERROR);
 	}
 	if (get_addr(host, 0, &dest_addr))

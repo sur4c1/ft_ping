@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:09:35 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/26 09:04:21 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 16:31:25 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_error	parse_arguments(int argc, char *argv[])
 		{"count", required_argument, NULL, 'c'},
 		{"linger", required_argument, NULL, 'W'},
 		{"interval", required_argument, NULL, 'i'},
+		{"ttl", required_argument, NULL, 0xFF + 't'},
 		{NULL, no_argument, NULL, 0},
 	};
 
@@ -40,6 +41,9 @@ t_error	parse_arguments(int argc, char *argv[])
 				break;
 			case 'i':
 				g_interval = ft_atoi(ft_optarg);
+				break;
+			case 0xFF + 't':
+				g_ttl = ft_atoi(ft_optarg);
 				break;
 			case '?':
 				if (!ft_optopt)
