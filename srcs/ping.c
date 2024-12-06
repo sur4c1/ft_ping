@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/06 16:16:04 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/06 17:22:42 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,7 @@ t_bool	is_packet_valid(char *packet, str message)
 	show_iphdr(iphdr);
 	show_icmphdr(icmp);
 	#endif
-	p_checksum = icmp->checksum;
-	icmp->checksum = 0;
-	if(p_checksum != checksum((u16 *)icmp, sizeof(struct icmphdr) + g_msgsz))
+	if(checksum((u16 *)icmp, sizeof(struct icmphdr) + g_msgsz))
 	{
 		if (g_verbose)
 			printf("From %s: icmp_seq=%d, ttl=%d, invalid checksum\n",
