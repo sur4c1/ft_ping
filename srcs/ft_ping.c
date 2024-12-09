@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 13:57:16 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/06 16:19:12 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/09 06:34:11 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ s32		g_count			= -1;
 int		g_msgsz			= 56;
 time_t	g_linger		= 10;
 time_t	g_interval		= 1;
-str		g_patern		= "abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXY";
+str		g_patern		= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 int		g_ttl			= 64;
 
 /*	SIGNALS
@@ -41,11 +41,12 @@ void	print_help(char *name)
 	printf("Usage: %s [OPTION]... DESTINATION\n", name);
 	printf("Send ICMP ECHO_REQUEST packets to network hosts\n");
 	printf("\n");
-	printf("\t-v,\t--verbose\tverbose output\n");
-	printf("\t-?,\t--help\t\tdisplay this help and exit\n");
-	printf("\t-c,\t--count\t\tstop after sending count ECHO_REQUEST packets\n");
-	printf("\t-W,\t--linger\ttime to wait for response\n");
-	printf("\t-i,\t--interval\twait interval seconds between sending each packet\n");
+	printf("\t-v,\t--verbose\t\tverbose output\n");
+	printf("\t-?,\t--help\t\t\tdisplay this help and exit\n");
+	printf("\t-c,\t--count=NUMBER\t\tstop after sending NUMBER ECHO_REQUEST packets\n");
+	printf("\t-W,\t--linger=NUMBER\t\twait NUMBER seconds for response\n");
+	printf("\t-i,\t--interval=NUMBER\twait NUMBER seconds between sending each packet\n");
+	printf("\t\t--ttl=NUMBER\t\tspecify NUMBER as time to live\n");
 }
 
 int	main(int argc, char *argv[])
@@ -67,7 +68,7 @@ int	main(int argc, char *argv[])
 		dprintf(2, "Try '%s --help' for more information.\n", argv[0]);
 		return (64);
 	}
-	while (ft_optind < argc && !g_stop)
+	while (ft_optind < argc)
 	{
 		if (ping(argv[ft_optind]))
 			return (1);

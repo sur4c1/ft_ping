@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/06 18:14:47 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/09 06:54:16 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,9 +177,7 @@ void	print_start(char *host, struct in_addr addr)
 }
 
 static
-void	print_received(
-	char *packet, struct timeval recv_time, struct timeval send_time
-)
+void	print_received(char *packet, t_packet_status status)
 {
 	struct iphdr	*iphdr;
 	struct icmphdr	*icmphdr;
@@ -187,8 +185,8 @@ void	print_received(
 
 	iphdr = (struct iphdr *)packet;
 	icmphdr = (struct icmphdr *)(packet + iphdr->ihl * 4);
-	diff.tv_sec = recv_time.tv_sec - send_time.tv_sec;
-	diff.tv_usec = recv_time.tv_usec - send_time.tv_usec;
+	diff.tv_sec = status.recv_time.tv_sec - status.send_time.tv_sec;
+	diff.tv_usec = status.recv_time.tv_usec - status.send_time.tv_usec;
 	while (diff.tv_usec < 0)
 	{
 		diff.tv_sec--;
@@ -205,7 +203,7 @@ void	print_received(
 }
 
 static
-void	print_stats(char *host, u16 seq, u16 recv_nb, struct timeval *timerecv, struct timeval *timesent)
+void	print_stats(char *host, u16 seq, u16 recv_nb, t_packet_status *status)
 {
 	double	max = -1.0/0.0;
 	double	min = 1.0/0.0;
@@ -213,16 +211,23 @@ void	print_stats(char *host, u16 seq, u16 recv_nb, struct timeval *timerecv, str
 	double	stddev = 0;
 	int		i;
 
+	if (!seq)
+		seq = 1;
 	printf("--- %s ping statistics ---\n", host);
 	printf("%d packets transmitted, %d received, %d%% packet loss\n",
 		seq, recv_nb, (seq - recv_nb) * 100 / seq);
 	if (!recv_nb)
 		return ;
 	i = 0;
-	while (i < recv_nb)
+	while (i < seq)
 	{
-		double	diff = (timerecv[i].tv_sec - timesent[i].tv_sec) * 1000.0 +
-			(timerecv[i].tv_usec - timesent[i].tv_usec) / 1000.0;
+		if (!status[i].is_recv)
+		{
+			i++;
+			continue ;
+		}
+		double	diff = (status[i].recv_time.tv_sec - status[i].send_time.tv_sec) * 1000.0 +
+			(status[i].recv_time.tv_usec - status[i].send_time.tv_usec) / 1000.0;
 		if (min > diff)
 			min = diff;
 		if (max < diff)
@@ -260,8 +265,7 @@ t_error	ping(char *host)
 	fd_set				readfds;
 	int					n;
 	struct timeval		now, last_sent, timeout;
-	struct timeval		timesent[U16_MAX];
-	struct timeval		timerecv[U16_MAX];
+	t_packet_status		status[U16_MAX];
 	t_bool				final = FALSE;
 	str					message;
 
@@ -287,15 +291,13 @@ t_error	ping(char *host)
 		return (UKNOWN_HOST);
 	}
 	seq = recv_nb = 0;
-	ft_bzero(timesent, sizeof(timesent));
-	ft_bzero(timerecv, sizeof(timerecv));
 	print_start(host, dest_addr.sin_addr);
 	FD_ZERO(&readfds);
+	ft_bzero(status, sizeof(status));
 	gettimeofday(&last_sent, NULL);
-	gettimeofday(&timesent[seq], NULL);
 	timeout.tv_sec = 0;
 	timeout.tv_usec = 0;
-	while (!g_stop)
+	do
 	{
 		while (timeout.tv_usec < 0)
 		{
@@ -325,18 +327,20 @@ t_error	ping(char *host)
 			recv_packet(sockfd, packet, sizeof(packet));
 			iphdr = (struct iphdr *)packet;
 			icmphdr = (struct icmphdr *)(packet + iphdr->ihl * 4);
-			gettimeofday(&timerecv[icmphdr->un.echo.sequence], NULL);
+
 			if (!is_packet_valid(packet, message))
 				continue ;
 			recv_nb++;
-			print_received(packet, timerecv[icmphdr->un.echo.sequence], timesent[icmphdr->un.echo.sequence]);
+			status[icmphdr->un.echo.sequence].is_recv = TRUE;
+			gettimeofday(&status[icmphdr->un.echo.sequence].recv_time, NULL);
+			print_received(packet, status[icmphdr->un.echo.sequence]);
 		}
 		else if (final)
 			break ;
 		else if (g_count == -1 || seq < g_count)
 		{
 			gettimeofday(&last_sent, NULL);
-			gettimeofday(&timesent[seq], NULL);
+			gettimeofday(&status[seq].send_time, NULL);
 			send_packet(sockfd, dest_addr, message, seq++);
 		}
 		if (g_count == -1 || seq < g_count)
@@ -354,7 +358,8 @@ t_error	ping(char *host)
 		else
 			break ;
 	}
-	print_stats(host, seq, recv_nb, timerecv, timesent);
+	while (!g_stop);
+	print_stats(host, seq, recv_nb, status);
 	free(message);
 	close(sockfd);
 	return (OK);
