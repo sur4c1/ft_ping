@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/09 06:54:16 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2024/12/09 06:57:55 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,11 +267,8 @@ t_error	ping(char *host)
 	struct timeval		now, last_sent, timeout;
 	t_packet_status		status[U16_MAX];
 	t_bool				final = FALSE;
-	str					message;
+	char				message[U16_MAX - sizeof(struct iphdr) - sizeof(struct icmphdr)];
 
-	message = malloc(g_msgsz);
-	if (!message)
-		return (ERROR);
 	fill(message, g_msgsz, g_patern);
 	if ((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP))< 0)
 	{
@@ -360,7 +357,6 @@ t_error	ping(char *host)
 	}
 	while (!g_stop);
 	print_stats(host, seq, recv_nb, status);
-	free(message);
 	close(sockfd);
 	return (OK);
 }
