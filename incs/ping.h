@@ -6,11 +6,12 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:37 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/09 06:40:22 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2026/05/20 09:44:38 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include "ping_types.h"
 #include "ft_ping.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -26,9 +27,9 @@
 
 typedef struct s_packet_status
 {
-	struct timeval	send_time;
-	struct timeval	recv_time;
-	t_bool			is_recv;
-}	t_packet_status;
+	struct timeval send_time;
+	struct timeval recv_time;
+	t_bool is_recv;
+} t_packet_status;
 
-t_error		ping(char *host);
+t_error ping(char *host, t_opt opt);

@@ -6,12 +6,13 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:08:22 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/11/23 14:41:16 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2026/05/20 09:48:28 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "ft_ping.h"
+#include "ping_types.h"
 
-t_error	parse_arguments(int argc, char *argv[]);
+int parse_arguments(int argc, char *argv[], inout t_opt *opt);

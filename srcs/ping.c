@@ -6,17 +6,16 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:39:04 by yyyyyy            #+#    #+#             */
-/*   Updated: 2024/12/09 06:57:55 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2026/05/20 09:50:32 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ping.h"
 
-static
-u16		checksum(u16 *data, size_t len)
+static u16 checksum(u16 *data, size_t len)
 {
-	u32		sum;
-	u16		*ptr;
+	u32 sum;
+	u16 *ptr;
 
 	sum = 0;
 	ptr = data;
@@ -33,8 +32,7 @@ u16		checksum(u16 *data, size_t len)
 }
 
 #ifdef DEBUG
-static
-void	show_iphdr(struct iphdr *iphdr)
+static void show_iphdr(struct iphdr *iphdr)
 {
 	printf("IP info:\n");
 	printf("\tVersion: %d\n", iphdr->version);
@@ -44,12 +42,11 @@ void	show_iphdr(struct iphdr *iphdr)
 	printf("\tTTL: %d\n", iphdr->ttl);
 	printf("\tProtocol: %d\n", iphdr->protocol);
 	printf("\tChecksum: %d\n", ntohs(iphdr->check));
-	printf("\tSource: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->saddr));
-	printf("\tDestination: %s\n", inet_ntoa(*(struct in_addr*) &iphdr->daddr));
+	printf("\tSource: %s\n", inet_ntoa(*(struct in_addr *)&iphdr->saddr));
+	printf("\tDestination: %s\n", inet_ntoa(*(struct in_addr *)&iphdr->daddr));
 }
 
-static
-void	show_icmphdr(struct icmphdr *icmphdr)
+static void show_icmphdr(struct icmphdr *icmphdr)
 {
 	printf("ICMP info:\n");
 	printf("\tType: %d\n", icmphdr->type);
@@ -60,67 +57,61 @@ void	show_icmphdr(struct icmphdr *icmphdr)
 }
 #endif
 
-static
-t_bool	is_packet_valid(char *packet, str message)
+static t_bool is_packet_valid(char *packet, str message)
 {
-	struct iphdr	*iphdr;
-	struct icmphdr	*icmp;
+	struct iphdr *iphdr;
+	struct icmphdr *icmp;
 
 	iphdr = (struct iphdr *)packet;
 	icmp = (struct icmphdr *)(packet + iphdr->ihl * 4);
-	#ifdef DEBUG
+#ifdef DEBUG
 	show_iphdr(iphdr);
 	show_icmphdr(icmp);
-	#endif
-	if(checksum((u16 *)icmp, sizeof(struct icmphdr) + g_msgsz))
+#endif
+	if (checksum((u16 *)icmp, sizeof(struct icmphdr) + g_msgsz))
 	{
 		if (g_verbose)
 			printf("From %s: icmp_seq=%d, ttl=%d, invalid checksum\n",
-				inet_ntoa(*(struct in_addr *)&iphdr->saddr),
-				icmp->un.echo.sequence,
-				iphdr->ttl
-			);
+				   inet_ntoa(*(struct in_addr *)&iphdr->saddr),
+				   icmp->un.echo.sequence,
+				   iphdr->ttl);
 		return (FALSE);
 	}
 	if (icmp->type != ICMP_ECHOREPLY)
 	{
 		if (g_verbose)
 			printf("From %s: icmp_seq=%d, ttl=%d, invalid type (%d)\n",
-				inet_ntoa(*(struct in_addr *)&iphdr->saddr),
-				icmp->un.echo.sequence,
-				iphdr->ttl,
-				icmp->type
-			);
+				   inet_ntoa(*(struct in_addr *)&iphdr->saddr),
+				   icmp->un.echo.sequence,
+				   iphdr->ttl,
+				   icmp->type);
 		return (FALSE);
 	}
 	if (icmp->un.echo.id != getpid())
 	{
 		if (g_verbose)
 			printf("From %s: icmp_seq=%d, ttl=%d, invalid id (%d)\n",
-				inet_ntoa(*(struct in_addr *)&iphdr->saddr),
-				icmp->un.echo.sequence,
-				iphdr->ttl,
-				icmp->un.echo.id
-			);
+				   inet_ntoa(*(struct in_addr *)&iphdr->saddr),
+				   icmp->un.echo.sequence,
+				   iphdr->ttl,
+				   icmp->un.echo.id);
 		return (FALSE);
 	}
 	if (ft_memcmp(packet + iphdr->ihl * 4 + sizeof(struct icmphdr), message, g_msgsz))
 	{
 		if (g_verbose)
 			printf("From %s: icmp_seq=%d, ttl=%d, invalid message\n",
-				inet_ntoa(*(struct in_addr *)&iphdr->saddr),
-				icmp->un.echo.sequence,
-				iphdr->ttl
-			);
+				   inet_ntoa(*(struct in_addr *)&iphdr->saddr),
+				   icmp->un.echo.sequence,
+				   iphdr->ttl);
 		return (FALSE);
 	}
 	return (TRUE);
 }
 
-static
-t_error	get_addr(char *host, int port, struct sockaddr_in *dest_addr)
+static t_error get_addr(char *host, int port, struct sockaddr_in *dest_addr)
 {
-	struct hostent		*hostent;
+	struct hostent *hostent;
 
 	if (!(hostent = gethostbyname(host)))
 		return (ERROR);
@@ -131,12 +122,11 @@ t_error	get_addr(char *host, int port, struct sockaddr_in *dest_addr)
 	return (OK);
 }
 
-static
-t_error	send_packet(int sockfd, struct sockaddr_in dest_addr, char *message, u16 seq)
+static t_error send_packet(int sockfd, struct sockaddr_in dest_addr, char *message, u16 seq)
 {
-	char 			packet[U16_MAX - sizeof(struct iphdr)];
-	struct icmphdr	*icmp;
-	char			*data;
+	char packet[U16_MAX - sizeof(struct iphdr)];
+	struct icmphdr *icmp;
+	char *data;
 
 	ft_bzero(packet, sizeof(packet));
 	icmp = (struct icmphdr *)packet;
@@ -149,17 +139,16 @@ t_error	send_packet(int sockfd, struct sockaddr_in dest_addr, char *message, u16
 	ft_memcpy(data, message, g_msgsz);
 	icmp->checksum = checksum((u16 *)icmp, sizeof(struct icmphdr) + g_msgsz);
 
-	ssize_t	n = sendto(sockfd, packet, sizeof(struct icmphdr) + g_msgsz, 0,
-		(struct sockaddr *)&dest_addr, sizeof(dest_addr));
+	ssize_t n = sendto(sockfd, packet, sizeof(struct icmphdr) + g_msgsz, 0,
+					   (struct sockaddr *)&dest_addr, sizeof(dest_addr));
 	if (n < 0)
 		return (ERROR);
 	return (OK);
 }
 
-static
-t_error	recv_packet(int sockfd, char *buffer, size_t len)
+static t_error recv_packet(int sockfd, char *buffer, size_t len)
 {
-	ssize_t	n;
+	ssize_t n;
 
 	n = recvfrom(sockfd, buffer, len, 0, NULL, NULL);
 	if (n < 0)
@@ -167,8 +156,7 @@ t_error	recv_packet(int sockfd, char *buffer, size_t len)
 	return (OK);
 }
 
-static
-void	print_start(char *host, struct in_addr addr)
+static void print_start(char *host, struct in_addr addr)
 {
 	printf("PING %s (%s): %d bytes of data", host, inet_ntoa(addr), g_msgsz);
 	if (g_verbose)
@@ -176,12 +164,11 @@ void	print_start(char *host, struct in_addr addr)
 	printf("\n");
 }
 
-static
-void	print_received(char *packet, t_packet_status status)
+static void print_received(char *packet, t_packet_status status)
 {
-	struct iphdr	*iphdr;
-	struct icmphdr	*icmphdr;
-	struct timeval	diff;
+	struct iphdr *iphdr;
+	struct icmphdr *icmphdr;
+	struct timeval diff;
 
 	iphdr = (struct iphdr *)packet;
 	icmphdr = (struct icmphdr *)(packet + iphdr->ihl * 4);
@@ -194,40 +181,38 @@ void	print_received(char *packet, t_packet_status status)
 	}
 
 	printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.3lf ms\n",
-		ntohs(iphdr->tot_len) - iphdr->ihl * 4,
-		inet_ntoa(*(struct in_addr *)&iphdr->saddr),
-		icmphdr->un.echo.sequence,
-		iphdr->ttl,
-		diff.tv_sec * 1000.0 + diff.tv_usec / 1000.0
-	);
+		   ntohs(iphdr->tot_len) - iphdr->ihl * 4,
+		   inet_ntoa(*(struct in_addr *)&iphdr->saddr),
+		   icmphdr->un.echo.sequence,
+		   iphdr->ttl,
+		   diff.tv_sec * 1000.0 + diff.tv_usec / 1000.0);
 }
 
-static
-void	print_stats(char *host, u16 seq, u16 recv_nb, t_packet_status *status)
+static void print_stats(char *host, u16 seq, u16 recv_nb, t_packet_status *status)
 {
-	double	max = -1.0/0.0;
-	double	min = 1.0/0.0;
-	double	avg = 0;
-	double	stddev = 0;
-	int		i;
+	double max = -1.0 / 0.0;
+	double min = 1.0 / 0.0;
+	double avg = 0;
+	double stddev = 0;
+	int i;
 
 	if (!seq)
 		seq = 1;
 	printf("--- %s ping statistics ---\n", host);
 	printf("%d packets transmitted, %d received, %d%% packet loss\n",
-		seq, recv_nb, (seq - recv_nb) * 100 / seq);
+		   seq, recv_nb, (seq - recv_nb) * 100 / seq);
 	if (!recv_nb)
-		return ;
+		return;
 	i = 0;
 	while (i < seq)
 	{
 		if (!status[i].is_recv)
 		{
 			i++;
-			continue ;
+			continue;
 		}
-		double	diff = (status[i].recv_time.tv_sec - status[i].send_time.tv_sec) * 1000.0 +
-			(status[i].recv_time.tv_usec - status[i].send_time.tv_usec) / 1000.0;
+		double diff = (status[i].recv_time.tv_sec - status[i].send_time.tv_sec) * 1000.0 +
+					  (status[i].recv_time.tv_usec - status[i].send_time.tv_usec) / 1000.0;
 		if (min > diff)
 			min = diff;
 		if (max < diff)
@@ -239,14 +224,13 @@ void	print_stats(char *host, u16 seq, u16 recv_nb, t_packet_status *status)
 	avg /= recv_nb;
 	stddev = sqrt(stddev / recv_nb - avg * avg);
 	printf("round-trip min/avg/max/stddev = %.3lf/%.3lf/%.3lf/%.3lf ms\n",
-		min, avg, max, stddev);
+		   min, avg, max, stddev);
 }
 
-static
-void	fill(str message, int len, str patern)
+static void fill(str message, int len, str patern)
 {
-	int		i;
-	size_t	patern_len = ft_strlen(patern);
+	int i;
+	size_t patern_len = ft_strlen(patern);
 
 	i = 0;
 	while (i < len)
@@ -256,21 +240,22 @@ void	fill(str message, int len, str patern)
 	}
 }
 
-t_error	ping(char *host)
+t_error ping(char *host, t_opt opt)
 {
-	int					sockfd;
-	struct sockaddr_in	dest_addr;
-	char				packet[U16_MAX];
-	u16					seq, recv_nb;
-	fd_set				readfds;
-	int					n;
-	struct timeval		now, last_sent, timeout;
-	t_packet_status		status[U16_MAX];
-	t_bool				final = FALSE;
-	char				message[U16_MAX - sizeof(struct iphdr) - sizeof(struct icmphdr)];
+	(void)opt;
+	int sockfd;
+	struct sockaddr_in dest_addr;
+	char packet[U16_MAX];
+	u16 seq, recv_nb;
+	fd_set readfds;
+	int n;
+	struct timeval now, last_sent, timeout;
+	t_packet_status status[U16_MAX];
+	t_bool final = FALSE;
+	char message[U16_MAX - sizeof(struct iphdr) - sizeof(struct icmphdr)];
 
 	fill(message, g_msgsz, g_patern);
-	if ((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP))< 0)
+	if ((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
 	{
 		perror("socket");
 		return (ERROR);
@@ -310,7 +295,7 @@ t_error	ping(char *host)
 			if (errno == EINTR)
 			{
 				timeout.tv_sec = 0;
-				continue ;
+				continue;
 			}
 			perror("select");
 			close(sockfd);
@@ -318,22 +303,22 @@ t_error	ping(char *host)
 		}
 		else if (n)
 		{
-			struct iphdr	*iphdr;
-			struct icmphdr	*icmphdr;
+			struct iphdr *iphdr;
+			struct icmphdr *icmphdr;
 
 			recv_packet(sockfd, packet, sizeof(packet));
 			iphdr = (struct iphdr *)packet;
 			icmphdr = (struct icmphdr *)(packet + iphdr->ihl * 4);
 
 			if (!is_packet_valid(packet, message))
-				continue ;
+				continue;
 			recv_nb++;
 			status[icmphdr->un.echo.sequence].is_recv = TRUE;
 			gettimeofday(&status[icmphdr->un.echo.sequence].recv_time, NULL);
 			print_received(packet, status[icmphdr->un.echo.sequence]);
 		}
 		else if (final)
-			break ;
+			break;
 		else if (g_count == -1 || seq < g_count)
 		{
 			gettimeofday(&last_sent, NULL);
@@ -353,9 +338,8 @@ t_error	ping(char *host)
 			final = TRUE;
 		}
 		else
-			break ;
-	}
-	while (!g_stop);
+			break;
+	} while (!g_stop);
 	print_stats(host, seq, recv_nb, status);
 	close(sockfd);
 	return (OK);
