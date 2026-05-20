@@ -12,29 +12,26 @@
 
 #include "ft_getopt.h"
 
-char	*ft_optarg = NULL;
-int		ft_optind = 1;
-int		ft_optopt = 0;
-t_bool	ft_opterr = TRUE;
+char *ft_optarg = NULL;
+int ft_optind = 1;
+int ft_optopt = 0;
+t_bool ft_opterr = TRUE;
 
-static
-t_bool	is_option(str arg)
+static t_bool is_option(str arg)
 {
 	return arg[0] == '-' && ft_strcmp(arg, "-");
 }
 
-static
-void	swap_args(char *const argv[], int i, int j)
+static void swap_args(char *const argv[], int i, int j)
 {
-	char	*tmp;
+	char *tmp;
 
 	tmp = argv[i];
-	((char **) argv)[i] = argv[j];
-	((char **) argv)[j] = tmp;
+	((char **)argv)[i] = argv[j];
+	((char **)argv)[j] = tmp;
 }
 
-static
-void	move_front(char *const argv[], int elemind, int nb_put_to_left)
+static void move_front(char *const argv[], int elemind, int nb_put_to_left)
 {
 	while (elemind > nb_put_to_left + 1)
 	{
@@ -43,17 +40,15 @@ void	move_front(char *const argv[], int elemind, int nb_put_to_left)
 	}
 }
 
-static
-int		shortparse(
+static int shortparse(
 	int argc,
 	char *const argv[],
 	const char *optstring,
-	int *nextshrt
-)
+	int *nextshrt)
 {
-	int		optindex;
-	int		shrtindex;
-	char	*opt;
+	int optindex;
+	int shrtindex;
+	char *opt;
 
 	optindex = ft_optind;
 	shrtindex = (*nextshrt)++;
@@ -66,7 +61,7 @@ int		shortparse(
 	if (!opt)
 	{
 		if (ft_opterr)
-			ft_printf("%s: invalid option -- %c\n", argv[0], argv[optindex][shrtindex]);
+			printf("%s: invalid option -- %c\n", argv[0], argv[optindex][shrtindex]);
 		ft_optopt = argv[optindex][shrtindex];
 		return '?';
 	}
@@ -85,7 +80,7 @@ int		shortparse(
 		else
 		{
 			if (ft_opterr)
-				ft_printf("%s: option requires an argument -- %c\n", argv[0], argv[optindex][shrtindex]);
+				printf("%s: option requires an argument -- %c\n", argv[0], argv[optindex][shrtindex]);
 			ft_optopt = argv[optindex][shrtindex];
 			return '?';
 		}
@@ -94,10 +89,9 @@ int		shortparse(
 	return argv[optindex][shrtindex];
 }
 
-static
-usz	ft_optlen(str opt)
+static usz ft_optlen(str opt)
 {
-	usz	i;
+	usz i;
 
 	i = 0;
 	while (opt[i] && opt[i] != '=')
@@ -105,16 +99,14 @@ usz	ft_optlen(str opt)
 	return i;
 }
 
-static
-const t_option	*longparse(
+static const t_option *longparse(
 	int argc,
-	char * const argv[],
+	char *const argv[],
 	const t_option *longopts,
-	int *longindex
-)
+	int *longindex)
 {
-	int		i;
-	char	*opt;
+	int i;
+	char *opt;
 
 	*longindex = -1;
 	opt = argv[ft_optind++] + 2;
@@ -131,7 +123,16 @@ const t_option	*longparse(
 			if (*longindex != -1)
 			{
 				if (ft_opterr)
-					ft_printf("%s: option '--%s' is ambiguous\n", argv[0], opt);
+					printf("ft_ping: option '--%s' is ambiguous; possibilities:", opt);
+				i = 0;
+				while (longopts[i].name)
+				{
+					if (!ft_strncmp(longopts[i].name, opt, ft_optlen(opt)))
+						printf(" '--%s'", longopts[i].name);
+					i++;
+				}
+				printf("\n");
+				ft_optopt = '?';
 				*longindex = 0;
 				return NULL;
 			}
@@ -142,13 +143,14 @@ const t_option	*longparse(
 	if (*longindex == -1)
 	{
 		if (ft_opterr)
-			ft_printf("%s: option '--%s' not recognized\n", argv[0], opt);
+			printf("ft_ping: unrecognized option '--%s'\n", opt);
+		ft_optopt = '?';
 		*longindex = 0;
 		return NULL;
 	}
 	ft_optarg = ft_strchr(opt, '=');
 	if (ft_optarg && longopts[*longindex].has_arg == no_argument && ft_opterr)
-		ft_printf("%s: option '--%s' doesn't allow an argument\n", argv[0], opt);
+		printf("%s: option '--%s' doesn't allow an argument\n", argv[0], opt);
 	if (ft_optarg || longopts[*longindex].has_arg == no_argument)
 	{
 		if (ft_optarg)
@@ -158,26 +160,28 @@ const t_option	*longparse(
 	if (ft_optind >= argc)
 	{
 		if (ft_opterr)
-			ft_printf("%s: option '--%s' requires an argument\n", argv[0], opt);
+			printf("%s: option '--%s' requires an argument\n", argv[0], opt);
 		return longopts + *longindex;
 	}
 	ft_optarg = argv[ft_optind++];
 	return longopts + *longindex;
 }
 
-int		ft_getopt_long(
+int ft_getopt_long(
 	int argc,
 	char *const argv[],
 	const char *optstring,
 	const t_option *longopts,
-	int *longindex
-)
+	int *longindex)
 {
-	const t_option	*longopt;
-	static int		nextshrt = 1;
-	static int		prevind = 0;
-	static int		nb_put_to_left = 0;
+	int garbage;
+	const t_option *longopt;
+	static int nextshrt = 1;
+	static int prevind = 0;
+	static int nb_put_to_left = 0;
 
+	if (!longindex)
+		longindex = &garbage;
 	ft_optarg = NULL;
 	if (prevind)
 		while (prevind < ft_optind)

@@ -16,6 +16,7 @@ SILENCER	=
 
 CC			=	$(SILENCER)cc
 CFLAGS		=	-Wall -Wextra -Werror -I $(INCS_DIR) -I $(LIBFT_DIR)
+CFLAGS	   +=	-fsanitize=address
 LDFLAGS		=	-L $(LIBFT_DIR) -lft -lm
 
 RM			=	$(SILENCER)rm -rf

@@ -6,7 +6,7 @@
 /*   By: yyyyyy <yyyyyy@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 14:09:35 by yyyyyy            #+#    #+#             */
-/*   Updated: 2026/05/20 09:51:48 by yyyyyy           ###   ########.fr       */
+/*   Updated: 2026/05/20 11:58:07 by yyyyyy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int parse_arguments(int argc, char *argv[], inout t_opt *opt)
 
 	while ((arg = ft_getopt_long(argc, argv, "c:i:vw:W:?V", longopts, NULL)) > 0)
 	{
-		printf("arg = %d (%c)\n", arg, arg);
 		switch (arg)
 		{
 		case 'c':
@@ -122,9 +121,11 @@ int parse_arguments(int argc, char *argv[], inout t_opt *opt)
 			exit(0);
 		case '?':
 			if (ft_optopt)
-				;
-			else
-				print_help();
+			{
+				printf("Try 'ft_ping --help' or 'ft_ping --usage' for more information.\n");
+				return (64);
+			}
+			print_help();
 			exit(0);
 		default:
 			break;
